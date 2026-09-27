@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Page</title>
+
+    <style>
+        :root {
+            --bg-color: #5e003f;         
+            --card-bg: #620949;          
+            --text-color: #c9d1d9;       
+            --heading-color: #f83db3;    
+            --main-title-color: #ffffff; 
+            --link-color: #f04b9e;     
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .connect-container {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .main-title {
+            color: var(--main-title-color);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .card-box {
+            background-color: var(--card-bg);
+            padding: 30px 35px;
+            border-radius: 16px;
+            text-align: justify;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .card-box h2 {
+            color: var(--heading-color);
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        .card-box h2:first-child {
+            margin-top: 0;
+        }
+
+        .card-box p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .skills-list span {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .sub-footer {
+            font-size: 14px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .back-link {
+            color: var(--link-color);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+.hover-connect-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.social-links {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hover-connect-wrapper:hover .social-links {
+    display: flex;
+    opacity: 1;
+}
+
+.social-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #981367; 
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 10px;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.social-btn:hover {
+    background-color: #62013d;
+    transform: translateY(-2px);
+}
+    </style>
+</head>
+<body>
+
+    <div class="connect-container">
+        <h1 class="main-title">Let's Connect</h1>
+
+        <div class="card-box">
+            <h2>About Me</h2>
+            <p>
+                Hai saya Chesa Randanti. Saya adalah mahasiswa jurusan Ilmu Komputer Prodi Manajemen Informatika Universitas Lampung angkatan 2025.
+                Saya lahir di Kalianda pada tanggal 21 Maret 2007. 
+            </p>
+
+            <h2>Experience</h2>
+            <p>
+                Selama menjalani perkuliahan, saya mendapatkan berbagai pengalaman baru, seperti mengikuti kegiatan kampus, berinteraksi dengan banyak orang, serta menghadapi berbagai tantangan dalam menyelesaikan tugas. Dari pengalaman tersebut, saya belajar menjadi lebih mandiri, mampu beradaptasi dengan lingkungan baru, dan lebih percaya diri dalam menghadapi berbagai situasi.</p>
+
+            <h2>Organization</h2>
+            <p>
+                Saya sekarang sedang aktif mengikuti kegiatan organisasi dan kepanitiaan di lingkungan kampus karna saya bagian dari Himpunan Mahasiswa Jurusan Ilmu Komputer (HIMAKOM).
+            </p>
+
+            <h2>Skills</h2>
+            <p>
+                Saya mulai terbiasa untuk menyampaikan ide, bertukar pikiran dengan orang lain, dan menghargai setiap pendapat agar dapat menemukan kesepakatan bersama.</p>
+        </div>
+
+        <!-- Wrapper Hover Area -->
+        <div class="hover-connect-wrapper">
+            <p class="sub-footer" style="cursor: pointer;">
+                Tak kenal maka tak sayang, kalo udah kenalan jangan terlalu sayang
+                <br>
+                tapi kalo mau kenalan bisa klik tombol di bawah ini
+            </p>
+
+            <!-- Tombol yang akan muncul saat hover -->
+            <div class="social-links">
+                <a href="https://wa.me/6289530328516" target="_blank" class="social-btn">WhatsApp</a>
+                <a href="mailto:chesarandantia@gmail.com" class="social-btn">Email</a>
+                <a href="https://instagram.com/chesarandanti" target="_blank" class="social-btn">Instagram</a>
+            </div>
+        </div>
+
+        <!-- Tombol Kembali -->
+        <a href="javascript:history.back()" class="back-link">Kembali</a>
+    </div>
+
+</body>
+</html>
