@@ -1,9 +1,5 @@
 <?php
-// =====================================================
-// Tugas 2 - Dashboard Nilai Mahasiswa
-// =====================================================
 
-// ---------- PENGATURAN (konstanta) ----------
 const BOBOT = ['tugas' => 0.3, 'uts' => 0.3, 'uas' => 0.4];
 const LABEL = ['tugas' => 'Tugas', 'uts' => 'UTS', 'uas' => 'UAS'];
 const NILAI_LULUS = 65;
@@ -17,10 +13,7 @@ const TABEL_GRADE = [
     [0,  'E', 'Sangat Kurang'],
 ];
 
-// Warna tiap grade untuk grafik
 const WARNA_GRADE = ['A' => '#6D3FD6', 'B' => '#22A55A', 'C' => '#2F5FE3', 'D' => '#F28C1E', 'E' => '#E5483D'];
-
-// Ikon (path SVG gaya garis)
 const IKON = [
     'beranda' => '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
     'input'   => '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>',
@@ -35,8 +28,6 @@ const IKON = [
     'persen'  => '<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
     'cetak'   => '<path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>',
 ];
-
-// ---------- FUNCTION UTAMA ----------
 
 function hitungNilaiAkhir(float $tugas, float $uts, float $uas): float
 {
@@ -74,7 +65,6 @@ function nilaiValid(string $isi): bool
     return $isi !== '' && is_numeric($isi) && $isi >= 0 && $isi <= 100;
 }
 
-// Memproses satu baris isian: validasi, lalu hitung jika benar
 function prosesBaris(array $baris): array
 {
     $masalah = [];
@@ -97,8 +87,6 @@ function prosesBaris(array $baris): array
     $baris['masalah'] = $masalah;
     return $baris;
 }
-
-// ---------- FUNCTION PEMBANTU TAMPILAN ----------
 
 function koma(float $angka): string
 {
@@ -136,7 +124,6 @@ function ikon(string $nama, int $ukuran = 22): string
          . 'aria-hidden="true">' . IKON[$nama] . '</svg>';
 }
 
-// Membuat gradasi kerucut untuk grafik donat. $bagian = [[warna, jumlah], ...]
 function donutCss(array $bagian): string
 {
     $total = array_sum(array_column($bagian, 1));
@@ -156,7 +143,6 @@ function donutCss(array $bagian): string
     return 'conic-gradient(' . implode(', ', $stop) . ')';
 }
 
-// Teks rentang nilai tiap grade, contoh "75 - 84,99"
 function rentangGrade(int $i): string
 {
     $bawah = TABEL_GRADE[$i][0];
@@ -166,7 +152,6 @@ function rentangGrade(int $i): string
     return koma($bawah) . ' - ' . koma(TABEL_GRADE[$i - 1][0] - 0.01);
 }
 
-// ---------- PROSES FORM ----------
 $sudahKirim = $_SERVER['REQUEST_METHOD'] === 'POST';
 $masuk = [];
 if ($sudahKirim) {
@@ -176,7 +161,7 @@ if ($sudahKirim) {
         foreach (['nama', 'nim', 'tugas', 'uts', 'uas'] as $k) {
             $baris[$k] = trim($_POST[$k][$i] ?? '');
         }
-        // Baris yang sama sekali kosong dilewati
+        
         if (implode('', $baris) === '') {
             continue;
         }
@@ -184,14 +169,10 @@ if ($sudahKirim) {
     }
 }
 
-// Kosong saat halaman pertama dibuka (belum ada input)
 $hasil = array_map('prosesBaris', $masuk);
-
-// Isi form: data yang dikirim, atau satu baris kosong
 $barisForm = $hasil ?: [['nama' => '', 'nim' => '', 'tugas' => '', 'uts' => '', 'uas' => '']];
 $valid = array_values(array_filter($hasil, fn($h) => empty($h['masalah'])));
 
-// ---------- DATA UNTUK DASHBOARD ----------
 $total = count($valid);
 $lulus = count(array_filter($valid, fn($h) => $h['status'] === 'Lulus'));
 $tidak = $total - $lulus;
@@ -222,6 +203,7 @@ foreach ($jumlahGrade as $g => $n) {
 $cssDonutGrade = donutCss($bagianGrade);
 $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -270,7 +252,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
             padding: 16px;
         }
 
-        /* ---------- Sidebar ---------- */
         .sidebar {
             position: sticky; top: 16px;
             height: calc(100vh - 32px);
@@ -297,8 +278,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
             background: rgba(255,255,255,.05); font-weight: 500; font-size: 15px;
         }
         .kutipan svg { color: var(--emas); margin-bottom: 8px; }
-
-        /* ---------- Panel utama ---------- */
         .panel {
             background: var(--latar);
             border-radius: 28px;
@@ -314,8 +293,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
             padding: 10px 16px; font: inherit; font-weight: 600; cursor: pointer;
         }
         .btn-cetak:hover { background: #4A2FC4; }
-
-        /* ---------- Kartu statistik ---------- */
         .statistik { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-bottom: 18px; }
         .stat {
             display: flex; align-items: center; gap: 14px;
@@ -334,8 +311,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         .s-ungu   { background: linear-gradient(135deg, #8A5BEA, #5B2FC2); } .s-ungu .lingkar   { color: #6D3FD6; }
         .s-oranye { background: linear-gradient(135deg, #FFA93F, #EE7608); } .s-oranye .lingkar { color: #EE7608; }
         .s-teal   { background: linear-gradient(135deg, #1BC0D1, #0D88A3); } .s-teal .lingkar   { color: #0D88A3; }
-
-        /* ---------- Kartu umum ---------- */
         .kartu {
             background: var(--kertas); border: 1px solid var(--garis);
             border-radius: 18px; padding: 22px; min-width: 0;
@@ -348,8 +323,7 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         .baris-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; align-items: start; }
         .kolom-kanan { display: grid; gap: 16px; }
         .kartu-form { margin-bottom: 16px; }
-
-        /* ---------- Form ---------- */
+        
         .petunjuk { margin: -6px 0 14px; color: var(--abu); font-size: 13px; }
         .peringatan {
             background: #FDECEA; color: #B3261E; border-left: 4px solid var(--merah);
@@ -374,7 +348,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         .btn-tambah { border: 2px solid var(--biru); border-radius: 10px; padding: 9px 18px; font-weight: 600; color: var(--biru); background: #fff; }
         .btn-tambah:hover { background: #EEF3FF; }
 
-        /* ---------- Donat ---------- */
         .donat-wadah { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
         .donat { position: relative; flex: none; width: 170px; aspect-ratio: 1; border-radius: 50%; }
         .donat::after { content: ""; position: absolute; inset: 27%; background: #fff; border-radius: 50%; }
@@ -390,7 +363,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         .legenda span { color: var(--abu); }
         .legenda strong { font-weight: 600; }
 
-        /* ---------- Grafik batang ---------- */
         .grafik { display: grid; grid-template-columns: 34px 1fr; }
         .sumbu { position: relative; height: 210px; font-size: 11px; color: var(--abu); }
         .sumbu span { position: absolute; right: 8px; transform: translateY(-50%); }
@@ -408,7 +380,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         .batang b { position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: 4px; font-size: 12px; font-weight: 600; white-space: nowrap; }
         .label-x { display: grid; grid-template-columns: repeat(4, 1fr); margin: 8px 0 0 34px; padding: 0 6%; text-align: center; font-size: 11.5px; color: var(--teks); gap: 8%; }
 
-        /* ---------- Peringkat ---------- */
         .rank { list-style: none; margin: 0; padding: 0; }
         .rank li { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--garis); }
         .rank li:last-child { border-bottom: 0; }
@@ -419,7 +390,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         .rank .nm { flex: 1; font-weight: 600; color: var(--biru); }
         .rank .nl { font-weight: 700; color: var(--hijau); }
 
-        /* ---------- Tabel ---------- */
         .gulir { overflow-x: auto; border-radius: 12px; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: var(--navy); color: #fff; padding: 11px 12px; font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
@@ -432,7 +402,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         .pil-lulus { background: #E3F5EC; color: var(--hijau); }
         .pil-gagal { background: #FDECEA; color: var(--merah); }
 
-        /* ---------- Aturan ---------- */
         .aturan { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 7px; font-size: 12.5px; }
         .aturan li { display: flex; align-items: center; gap: 10px; }
         .aturan .chip { min-width: 26px; text-align: center; font-size: 12px; }
@@ -446,7 +415,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         @keyframes naik { from { transform: scaleY(0); } to { transform: scaleY(1); } }
         @media (prefers-reduced-motion: reduce) { .batang { animation: none; } html { scroll-behavior: auto; } }
 
-        /* ---------- Responsif ---------- */
         @media (max-width: 1240px) {
             .baris-3 { grid-template-columns: 1fr 1fr; }
             .baris-3 .kartu:last-child { grid-column: 1 / -1; }
@@ -481,8 +449,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
 </head>
 <body>
 <div class="app">
-
-    <!-- ===== Sidebar ===== -->
     <aside class="sidebar">
         <div class="logo">
             <?= ikon('topi', 40) ?>
@@ -503,8 +469,7 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
             <div>&ldquo;Pendidikan adalah kunci sukses. Teruslah belajar, teruslah berkembang!&rdquo;</div>
         </div>
     </aside>
-
-    <!-- ===== Panel utama ===== -->
+    
     <main class="panel">
 
         <div class="kepala" id="ringkasan">
@@ -512,7 +477,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
             <button type="button" class="btn-cetak" onclick="window.print()"><?= ikon('cetak', 18) ?>Cetak</button>
         </div>
 
-        <!-- Kartu statistik -->
         <section class="statistik" aria-label="Ringkasan statistik">
             <div class="stat s-biru">
                 <div class="lingkar"><?= ikon('pengguna', 28) ?></div>
@@ -535,8 +499,7 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
                 <div><small>Tidak lulus</small><strong><?= $tidak ?></strong><span class="ket"><?= tampilPersen(persen($tidak, $total)) ?> dari total</span></div>
             </div>
         </section>
-
-        <!-- Form input -->
+        
         <section class="kartu kartu-form" id="input" aria-labelledby="j-input">
             <h2 id="j-input">Input data mahasiswa</h2>
             <p class="petunjuk">Isi nama, NIM, dan nilai (0 sampai 100), lalu klik &ldquo;Hitung nilai&rdquo;. Klik &ldquo;Tambah mahasiswa&rdquo; untuk memasukkan lebih dari satu orang.</p>
@@ -578,7 +541,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
             </form>
         </section>
 
-        <!-- Baris grafik -->
         <div class="baris-3" id="grafik">
 
             <section class="kartu" aria-labelledby="j-grade">
@@ -641,8 +603,7 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
                 <?php endif; ?>
             </section>
         </div>
-
-        <!-- Baris tabel -->
+        
         <div class="baris-2">
             <section class="kartu" id="hasil" aria-labelledby="j-hasil">
                 <h2 id="j-hasil">Hasil perhitungan</h2>
@@ -717,7 +678,6 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
 </div>
 
 <script>
-    // Menambah baris isian baru dengan menyalin baris pertama
     function tambahBaris() {
         const wadah = document.getElementById('daftarBaris');
         const salinan = wadah.firstElementChild.cloneNode(true);
@@ -725,16 +685,14 @@ $cssDonutLulus = donutCss([['#22A55A', $lulus], ['#E5483D', $tidak]]);
         wadah.appendChild(salinan);
         salinan.querySelector('input').focus();
     }
-
-    // Menghapus baris, tetapi menyisakan minimal satu
+    
     function hapusBaris(tombol) {
         const wadah = document.getElementById('daftarBaris');
         if (wadah.children.length > 1) {
             tombol.closest('.f-baris').remove();
         }
     }
-
-    // Menandai menu yang sedang diklik
+    
     document.querySelectorAll('#menu a').forEach(function (tautan) {
         tautan.addEventListener('click', function () {
             document.querySelectorAll('#menu a').forEach(function (a) { a.classList.remove('aktif'); });
