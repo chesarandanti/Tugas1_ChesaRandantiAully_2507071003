@@ -3,8 +3,6 @@
 const BOBOT = ['tugas' => 0.3, 'uts' => 0.3, 'uas' => 0.4];
 const LABEL = ['tugas' => 'Tugas', 'uts' => 'UTS', 'uas' => 'UAS'];
 const NILAI_LULUS = 65;
-
-// Tabel grade: [batas bawah, grade, predikat]. Diurutkan dari tertinggi.
 const TABEL_GRADE = [
     [85, 'A', 'Sangat Baik'],
     [75, 'B', 'Baik'],
